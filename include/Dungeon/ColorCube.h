@@ -33,22 +33,20 @@ enum class CubeColor {
 class ColorCube final : public Core::Drawable {
 public:
     ColorCube(Dungeon::CubeColor color);
-    ColorCube();
+    ColorCube() = default;
     ~ColorCube() = default;
     void               Draw(const Core::Matrices& data) override;
     glm::vec2          GetSize() const override;
     bool               GetAvailable() const;
     void               SetColor(Dungeon::CubeColor color);
     Dungeon::CubeColor GetColor() const;
-    static void        InitColorMap();
 
 private:
+    std::unique_ptr<Util::Image> ColorCubeFactory(Dungeon::CubeColor color);
     Dungeon::CubeColor           m_Color;
-    std::shared_ptr<Util::Image> m_Image;
+    std::unique_ptr<Util::Image> m_Image;
 
-    static std::map<Dungeon::CubeColor, std::shared_ptr<Util::Image>>
-                m_ColorMap;
-    static bool m_ColorMapInitialized;
+    std::map<Dungeon::CubeColor, std::unique_ptr<Util::Image>> m_ColorMap;
 
     bool m_Available = false;
 };
